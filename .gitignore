@@ -1,0 +1,19 @@
+# Virtual environment
+venv/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Generated files
+*.jsonl
+*.json # To exclude the pretty.json file as well.
+       # If you have other .json files you DO want to commit, you'll need to be more specific.
+
+# Environment variables (if you ever create a .env file locally)
+.env
+.env.*
+
+# API keys (if you ever hardcode them, which you shouldn't!)
+api_key.txt
+*.key

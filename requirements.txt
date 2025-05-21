@@ -1,0 +1,4 @@
+openai
+# Add other libraries here if your script uses them later, e.g.,
+# pinecone-client
+# beautifulsoup4 # if you decide to add HTML parsin

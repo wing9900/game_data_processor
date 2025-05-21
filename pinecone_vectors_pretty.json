@@ -1,0 +1,134 @@
+[
+  {
+    "id": "p-51_mustang_general_info",
+    "values": "[EMBEDDING_VECTOR_REMOVED_FOR_READABILITY]",
+    "metadata": {
+      "entity_type": "aircraft",
+      "item_name": "P-51 Mustang",
+      "info_type": "general_info",
+      "price": 700000,
+      "unlock_method": "Purchase",
+      "unlock_location": "Plane Hangar",
+      "unlock_rebirth_level": 7,
+      "seating_capacity": 1,
+      "hulls": 1,
+      "weapons_count": 1,
+      "engines_count": 1,
+      "utility": [
+        "Zoom In"
+      ]
+    },
+    "text_content": "The North American P-51 Mustang (referred to as simply the 'P-51 Mustang' in War Tycoon) is a WW2-era fighter. It is unlocked after purchasing it for $700,000 in the Plane Hangar at Rebirth 7. It has a seating capacity of 1, 1 hull, 1 weapon, 1 engine, and the utility 'Zoom In'."
+  },
+  {
+    "id": "p-51_mustang_overview_full_text",
+    "values": "[EMBEDDING_VECTOR_REMOVED_FOR_READABILITY]",
+    "metadata": {
+      "entity_type": "aircraft",
+      "item_name": "P-51 Mustang",
+      "info_type": "overview_full_text",
+      "section_title": "Overview"
+    },
+    "text_content": "The P-51 Mustang is regarded as one of the weakest and most vulnerable vehicles in the entire game due to having no flares. Since it's a plane, it does not have the luxury of having the maneuverability of helicopters to linger in their flares, avoid lock-on missiles, and counter anti-air vehicles such as the Pantsir S1 and Patriot AA, which are extremely effective against the P-51 and other planes. The P-51 Mustang is equipped with four 20mm cannons mounted to its wings, which function similarly to a machine gun due to their lower individual fire rate when compared to the rotary cannons mounted to other planes such as the F-4 Phantom, F-14 Tomcat, and F-16 Falcon to name a few. The P-51's 20mm cannons combined, however, deal significant damage-per-shot and are able to fire over a larger area with each cannon shooting in an alternating pattern to maximise fire rate and coverage. The P-51 Mustang also comes with a single .50 caliber machine gun mounted underneath the nose, which, although by itself has a limited effectiveness, when combined with the more powerful 20mm cannons, the .50 caliber provides extra attrition damage against enemy vehicles and exposed infantry. Much like its real-life counterpart, the P-51 Mustang serves as an effective plane for Close Air Support (CAS) roles. Its powerful Area of Effect (AoE) damage makes the platform well suited for engaging lightly armored vehicles and exposed infantry whilst also being able to finish off severely damaged tanks in specific circumstances. Evaluating this plane, if used correctly, the P-51 Mustang is a cheap, effective CAS aircraft but falters in other roles due to the divide between its skill requirements and effectiveness against other, more advanced planes."
+  },
+  {
+    "id": "p-51_mustang_overview_concise",
+    "values": "[EMBEDDING_VECTOR_REMOVED_FOR_READABILITY]",
+    "metadata": {
+      "entity_type": "aircraft",
+      "item_name": "P-51 Mustang",
+      "info_type": "overview_summary",
+      "strengths": [
+        "Close Air Support (CAS)",
+        "Area of Effect (AoE) damage",
+        "engaging lightly armored vehicles and exposed infantry",
+        "finishing off severely damaged tanks",
+        "cheap"
+      ],
+      "weaknesses": [
+        "no flares",
+        "vulnerable to lock-on missiles",
+        "vulnerable to anti-air"
+      ],
+      "role": "Close Air Support (CAS)"
+    },
+    "text_content": "The P-51 Mustang is considered one of the weakest vehicles due to no flares, vulnerable to lock-on missiles and anti-air. However, it excels in Close Air Support (CAS) roles with powerful AoE damage against lightly armored vehicles and infantry. It's a cheap, effective CAS aircraft but struggles in other roles."
+  },
+  {
+    "id": "p-51_mustang_armament_20mm_cannons",
+    "values": "[EMBEDDING_VECTOR_REMOVED_FOR_READABILITY]",
+    "metadata": {
+      "entity_type": "aircraft",
+      "item_name": "P-51 Mustang",
+      "info_type": "armament",
+      "weapon_type": "20mm Cannons",
+      "count": 4,
+      "mount_location": "wings",
+      "function_analogy": "machine gun",
+      "damage_characteristic": "significant damage-per-shot (combined)"
+    },
+    "text_content": "Equipped with four 20mm cannons mounted to its wings, which function similarly to a machine gun due to their lower individual fire rate compared to rotary cannons. Combined, they deal significant damage-per-shot and fire over a larger area with alternating patterns."
+  },
+  {
+    "id": "p-51_mustang_armament_50cal_mg",
+    "values": "[EMBEDDING_VECTOR_REMOVED_FOR_READABILITY]",
+    "metadata": {
+      "entity_type": "aircraft",
+      "item_name": "P-51 Mustang",
+      "info_type": "armament",
+      "weapon_type": ".50 Caliber Machine Gun",
+      "count": 1,
+      "mount_location": "underneath the nose",
+      "effectiveness_alone": "limited",
+      "combined_effectiveness": "extra attrition damage"
+    },
+    "text_content": "Comes with a single .50 caliber machine gun mounted underneath the nose. Limited effectiveness by itself, but provides extra attrition damage when combined with 20mm cannons."
+  },
+  {
+    "id": "p-51_mustang_stats_speed",
+    "values": "[EMBEDDING_VECTOR_REMOVED_FOR_READABILITY]",
+    "metadata": {
+      "entity_type": "aircraft",
+      "item_name": "P-51 Mustang",
+      "info_type": "stats",
+      "stat_type": "Speed",
+      "unit": "MPH",
+      "tiers": {
+        "Non-Upgraded": 205,
+        "Tier 1": null,
+        "Tier 2": null,
+        "Tier 3": 266
+      }
+    },
+    "text_content": "Speed (Minimum): 205 MPH, Speed (Maximum): 266 MPH. Tier 1 and Tier 2 speeds are [TBA]."
+  },
+  {
+    "id": "p-51_mustang_stats_health",
+    "values": "[EMBEDDING_VECTOR_REMOVED_FOR_READABILITY]",
+    "metadata": {
+      "entity_type": "aircraft",
+      "item_name": "P-51 Mustang",
+      "info_type": "stats",
+      "stat_type": "Health",
+      "unit": "HP",
+      "tiers": {
+        "Non-Upgraded": 650,
+        "Tier 1": 715,
+        "Tier 2": 780,
+        "Tier 3": 845
+      }
+    },
+    "text_content": "Health (Minimum): 650 HP, Health (Maximum): 845 HP. Tier 1: 715 HP, Tier 2: 780 HP."
+  },
+  {
+    "id": "p-51_mustang_category_membership",
+    "values": "[EMBEDDING_VECTOR_REMOVED_FOR_READABILITY]",
+    "metadata": {
+      "entity_type": "aircraft",
+      "item_name": "P-51 Mustang",
+      "info_type": "category_membership",
+      "aircraft_category": "Fighters"
+    },
+    "text_content": "The P-51 Mustang is classified under the 'Fighters' category of planes."
+  }
+]
