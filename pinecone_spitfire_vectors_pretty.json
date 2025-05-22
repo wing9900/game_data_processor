@@ -1,0 +1,171 @@
+[
+  {
+    "id": "spitfire_general_info",
+    "values": "[EMBEDDING_VECTOR_REMOVED_FOR_READABILITY]",
+    "metadata": {
+      "entity_type": "aircraft",
+      "item_name": "Spitfire",
+      "info_type": "general_info",
+      "unlock_method": "Player Level 20",
+      "unlock_level": 20,
+      "hangar_access_rebirth_level": 7,
+      "seating_capacity": 1,
+      "hulls": 1,
+      "weapons_count": 1,
+      "engines_count": 1,
+      "utility": [
+        "Zoom In"
+      ]
+    },
+    "text_content": "The Supermarine Spitfire is a World War 2-era British fighter plane, retired in 1954. It is automatically unlocked after reaching Player Level 20 from Daily Challenges and found in the Plane Hangar after Rebirth 7. It has 1 seating capacity, 1 hull, 1 weapon, 1 engine, and the utility 'Zoom In'."
+  },
+  {
+    "id": "spitfire_overview_full_text",
+    "values": "[EMBEDDING_VECTOR_REMOVED_FOR_READABILITY]",
+    "metadata": {
+      "entity_type": "aircraft",
+      "item_name": "Spitfire",
+      "info_type": "overview_full_text",
+      "section_title": "Overview"
+    },
+    "text_content": "The Spitfire is a heavily underrated plane in War Tycoon, being under the assumption of being extremely weak due to its status as a propeller plane. The plane is famous for its rapid turn rate even for its age, being able to out-turn modern aircraft like the F-14 Tomcat and the A-10 Warthog, making these jets extremely vulnerable to the high-damage cannons on the Spitfire.\nThe armament diminishes shields, aircraft, and even tanks, taking as little as two dives to completely destroy a full HP MAUS, being the tank with the highest health in the game, and being very difficult for planes and helicopters to destroy if not already low on HP. What makes it even more overpowered is the very long fire rate it has; it takes more than 10 seconds to go into cooldown and recharges rapidly if you stop firing the cannons before it hits the cooldown. This allows for a practically infinite source of ammo, and while your opponents are waiting for their cooldown to finish, they become an easy target to eliminate.\nThe only true weakness of the Spitfire is its slow speed compared to the other aircraft and its role as a propeller plane, not being able to chase down enemies across the map without veteran aim or vertically up into the sky, where it will stall and lose altitude. It is important that when in a dogfight with the Spitfire, you have as low an altitude as possible and have room to go full speed so you can climb up, fly fast and dive back on the Spitfire when far enough away from it.\nOverall, this plane may take some practice to use correctly, for it can easily be defeated by modern aircraft, for it has unsurprisingly low HP compared to them, but it's worth noting that this plane is a large threat you'll need to confront in the skies.\nStats\nFirepower\nArmament\nDamage Per Shot (Non-Upgraded)\nDamage Per Shot (Tier 1)\nDamage Per Shot (Tier 2)\nDamage Per Shot (Tier 3)\n20mm Cannons\n40 Damage\n44 Damage\n48 Damage\n52 Damage\n.303 Browning Machine Gun\n20 Damage\n22 Damage\n24 Damage\n26 Damage\nSpeed\nSpeed (Non-Upgraded)\nSpeed (Tier 1)\nSpeed (Tier 2)\nSpeed (Tier 3)\n205 MPH\n225 MPH\n246 MPH\n266 MPH\nHealth\nHealth (Non-Upgraded)\nHealth (Tier 1)\nHealth (Tier 2)\nHealth (Tier 3)\n750 HP\n825 HP\n900 HP\n975 HP\n"
+  },
+  {
+    "id": "spitfire_overview_concise",
+    "values": "[EMBEDDING_VECTOR_REMOVED_FOR_READABILITY]",
+    "metadata": {
+      "entity_type": "aircraft",
+      "item_name": "Spitfire",
+      "info_type": "overview_summary",
+      "strengths": [
+        "Rapid turn rate",
+        "Out-turns modern aircraft (F-14, A-10)",
+        "High-damage cannons",
+        "Effective against shields, aircraft, tanks (e.g., MAUS)",
+        "Long fire rate before cooldown",
+        "Practically infinite ammo"
+      ],
+      "weaknesses": [
+        "Slow speed",
+        "Propeller plane limitations (chasing, vertical climb)",
+        "Can stall/lose altitude high up",
+        "Low HP compared to modern aircraft"
+      ],
+      "role": "Underrated fighter",
+      "playstyle_notes": "Best at low altitude, full speed for climbs/dives in dogfights."
+    },
+    "text_content": "The Spitfire is an underrated propeller plane known for its rapid turn rate, out-turning modern jets like F-14 and A-10. Its high-damage cannons can destroy even a full HP MAUS in two dives. It has a very long fire rate before cooldown, allowing practically infinite ammo. Its main weakness is slow speed compared to other aircraft, making long chases or vertical climbs difficult, and it has low HP compared to modern aircraft."
+  },
+  {
+    "id": "spitfire_armament_20mm_cannons",
+    "values": "[EMBEDDING_VECTOR_REMOVED_FOR_READABILITY]",
+    "metadata": {
+      "entity_type": "aircraft",
+      "item_name": "Spitfire",
+      "info_type": "armament",
+      "weapon_type": "20mm Cannons",
+      "count": 2,
+      "damage_notes": "high-damage, effective against shields/aircraft/tanks (e.g., MAUS)",
+      "fire_rate_notes": "very long fire rate (over 10s before cooldown), rapid recharge"
+    },
+    "text_content": "Equipped with two 20mm cannons. These high-damage cannons are effective against shields, aircraft, and tanks (can destroy a full HP MAUS in two dives). They have a very long fire rate before cooldown (more than 10 seconds) and recharge rapidly."
+  },
+  {
+    "id": "spitfire_armament_303_browning_mg",
+    "values": "[EMBEDDING_VECTOR_REMOVED_FOR_READABILITY]",
+    "metadata": {
+      "entity_type": "aircraft",
+      "item_name": "Spitfire",
+      "info_type": "armament",
+      "weapon_type": ".303 Browning Machine Gun",
+      "count": 4,
+      "damage_notes": "additional damage"
+    },
+    "text_content": "Comes with four .303 Browning Machine Guns. Provides additional damage."
+  },
+  {
+    "id": "spitfire_stats_speed",
+    "values": "[EMBEDDING_VECTOR_REMOVED_FOR_READABILITY]",
+    "metadata": {
+      "entity_type": "aircraft",
+      "item_name": "Spitfire",
+      "info_type": "stats",
+      "stat_type": "Speed",
+      "unit": "MPH",
+      "tiers": {
+        "Non-Upgraded": 205,
+        "Tier 1": 225,
+        "Tier 2": 246,
+        "Tier 3": 266
+      }
+    },
+    "text_content": "Speed (Non-Upgraded): 205 MPH, Speed (Tier 1): 225 MPH, Speed (Tier 2): 246 MPH, Speed (Tier 3): 266 MPH."
+  },
+  {
+    "id": "spitfire_stats_health",
+    "values": "[EMBEDDING_VECTOR_REMOVED_FOR_READABILITY]",
+    "metadata": {
+      "entity_type": "aircraft",
+      "item_name": "Spitfire",
+      "info_type": "stats",
+      "stat_type": "Health",
+      "unit": "HP",
+      "tiers": {
+        "Non-Upgraded": 750,
+        "Tier 1": 825,
+        "Tier 2": 900,
+        "Tier 3": 975
+      }
+    },
+    "text_content": "Health (Non-Upgraded): 750 HP, Health (Tier 1): 825 HP, Health (Tier 2): 900 HP, Health (Tier 3): 975 HP."
+  },
+  {
+    "id": "spitfire_stats_firepower_20mm_cannons",
+    "values": "[EMBEDDING_VECTOR_REMOVED_FOR_READABILITY]",
+    "metadata": {
+      "entity_type": "aircraft",
+      "item_name": "Spitfire",
+      "info_type": "stats",
+      "stat_type": "Firepower",
+      "armament": "20mm Cannons",
+      "unit": "Damage",
+      "tiers": {
+        "Non-Upgraded": 40,
+        "Tier 1": 44,
+        "Tier 2": 48,
+        "Tier 3": 52
+      }
+    },
+    "text_content": "20mm Cannons Damage Per Shot: Non-Upgraded: 40 Damage, Tier 1: 44 Damage, Tier 2: 48 Damage, Tier 3: 52 Damage."
+  },
+  {
+    "id": "spitfire_stats_firepower_303_mg",
+    "values": "[EMBEDDING_VECTOR_REMOVED_FOR_READABILITY]",
+    "metadata": {
+      "entity_type": "aircraft",
+      "item_name": "Spitfire",
+      "info_type": "stats",
+      "stat_type": "Firepower",
+      "armament": ".303 Browning Machine Gun",
+      "unit": "Damage",
+      "tiers": {
+        "Non-Upgraded": 20,
+        "Tier 1": 22,
+        "Tier 2": 24,
+        "Tier 3": 26
+      }
+    },
+    "text_content": ".303 Browning Machine Gun Damage Per Shot: Non-Upgraded: 20 Damage, Tier 1: 22 Damage, Tier 2: 24 Damage, Tier 3: 26 Damage."
+  },
+  {
+    "id": "spitfire_category_membership",
+    "values": "[EMBEDDING_VECTOR_REMOVED_FOR_READABILITY]",
+    "metadata": {
+      "entity_type": "aircraft",
+      "item_name": "Spitfire",
+      "info_type": "category_membership",
+      "aircraft_category": "Fighters"
+    },
+    "text_content": "The Spitfire is classified under the 'Fighters' category of planes."
+  }
+]

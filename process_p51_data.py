@@ -59,11 +59,11 @@ def save_vectors_to_jsonl(vectors: List[PineconeVector], filepath: str = "pineco
             f.write(json.dumps(vector_dict) + '\n')
     print(f"Appended {len(vectors)} vectors to {filepath}")
 
-# --- 3. Helper to Write Pretty JSON Output to a File (MODIFIED for no vectors) ---
+# --- 3. Helper to Write Pretty JSON Output to a File ---
 def write_pretty_json_output(
     input_jsonl_filepath: str = "pinecone_vectors.jsonl",
     output_json_filepath: str = "pinecone_vectors_pretty.json",
-    remove_embeddings_for_display: bool = True # This parameter is already here and defaults to True
+    remove_embeddings_for_display: bool = True
 ):
     """
     Reads a .jsonl file, converts its contents into a pretty-printed JSON array,
@@ -83,24 +83,81 @@ def write_pretty_json_output(
         for line in f:
             try:
                 vector_data: PineconeVector = json.loads(line)
-                
+
                 # --- Modify the vector for display purposes ---
                 if remove_embeddings_for_display:
                     vector_data["values"] = "[EMBEDDING_VECTOR_REMOVED_FOR_READABILITY]"
-                
+
                 all_vectors_data_for_display.append(vector_data)
 
             except json.JSONDecodeError as e:
                 print(f"Error decoding JSON line from {input_jsonl_filepath}: {e}\nContent: {line.strip()}")
-                break 
-    
+                break
+
     with open(output_json_filepath, 'w', encoding='utf-8') as f:
         json.dump(all_vectors_data_for_display, f, indent=2, ensure_ascii=False)
-    
+
     print(f"\nPretty-printed data saved to '{output_json_filepath}'.")
 
+# --- NEW HELPER: Aggressive Character Scrubbing for Raw Content ---
+def _scrub_webpage_content_chars(text: str) -> str:
+    """
+    Performs aggressive character scrubbing to remove problematic non-standard
+    or invisible characters that might cause parsing issues.
+    """
+    # 1. Convert to ASCII and ignore non-ASCII characters
+    cleaned_text = text.encode('ascii', 'ignore').decode('ascii')
 
-# --- 4. Parsing Function for P-51 Mustang (Example: Aircraft Page) ---
+    # 2. Normalize hyphens and common dashes to standard hyphen-minus
+    cleaned_text = cleaned_text.replace('–', '-').replace('—', '-')
+
+    # 3. Remove zero-width spaces and similar invisible characters
+    cleaned_text = cleaned_text.replace('\u200B', '').replace('\u200C', '').replace('\u200D', '').replace('\uFEFF', '')
+
+    # 4. Remove any remaining non-standard whitespace or control characters
+    cleaned_text = re.sub(r'[\x00-\x1F\x7F-\x9F]', '', cleaned_text)
+
+    return cleaned_text
+
+# --- 5. Function to Read and Clean Webpage Content from File ---
+# This function is duplicated for convenience in each script, but could be put in a shared utility file.
+def read_and_clean_webpage(filepath: str) -> str:
+    """
+    Reads content from a text file and performs initial cleaning steps
+    to remove common webpage junk elements.
+
+    Args:
+        filepath: The path to the .txt file containing the webpage content.
+
+    Returns:
+        The cleaned string content of the webpage.
+    """
+    if not os.path.exists(filepath):
+        raise FileNotFoundError(f"Webpage file not found: {filepath}")
+
+    with open(filepath, 'r', encoding='utf-8') as f:
+        content = f.read()
+
+    # --- Apply aggressive character scrubbing first ---
+    content = _scrub_webpage_content_chars(content)
+
+    # --- Existing Cleaning Logic ---
+    # 1. Remove "SIGN IN TO EDIT" line and potentially related elements (e.g., chat bubble info)
+    content = re.sub(r'\s*\d+\s*[\u200B-\u200D\uFEFF]?\s*\uD83D[\uDCAD\uDCE4\uDCAC\uDD8E\uDD81-\uDD8E\u200B-\u200D\uFEFF]?[^\n]*?SIGN IN TO EDIT.*?[\u200B-\u200D\uFEFF]?\u22EE\s*', '', content, flags=re.DOTALL)
+    content = re.sub(r'SIGN IN TO EDIT.*', '', content)
+
+    # 2. Remove "Contents [hide]" block (Table of Contents)
+    content = re.sub(r'Contents\s*\[hide\].*?(?=(Overview|\d+\s*Overview|\d+\s*Stats|\d+\s*Firepower|\d+\s*Speed|\d+\s*Health))', '', content, flags=re.DOTALL | re.IGNORECASE)
+
+    # 3. Remove standalone numbers/decimals on lines (like 1, 2, 2.1 from TOC)
+    content = re.sub(r'^\s*\d+(\.\d+)?\s*$', '', content, flags=re.MULTILINE)
+
+    # 4. Remove excessive blank lines
+    content = re.sub(r'\n{3,}', '\n\n', content)
+
+    return content.strip()
+
+# --- Parsing Function for P-51 Mustang ---
 def parse_p51_webpage_content(webpage_text: str) -> List[PineconeVector]:
     """
     Parses the cleaned text content of a P-51 Mustang-like webpage
@@ -137,7 +194,44 @@ def parse_p51_webpage_content(webpage_text: str) -> List[PineconeVector]:
     ))
 
     # --- Chunk 2: Full Overview Text ---
-    full_overview_text = """The P-51 Mustang is regarded as one of the weakest and most vulnerable vehicles in the entire game due to having no flares. Since it's a plane, it does not have the luxury of having the maneuverability of helicopters to linger in their flares, avoid lock-on missiles, and counter anti-air vehicles such as the Pantsir S1 and Patriot AA, which are extremely effective against the P-51 and other planes. The P-51 Mustang is equipped with four 20mm cannons mounted to its wings, which function similarly to a machine gun due to their lower individual fire rate when compared to the rotary cannons mounted to other planes such as the F-4 Phantom, F-14 Tomcat, and F-16 Falcon to name a few. The P-51's 20mm cannons combined, however, deal significant damage-per-shot and are able to fire over a larger area with each cannon shooting in an alternating pattern to maximise fire rate and coverage. The P-51 Mustang also comes with a single .50 caliber machine gun mounted underneath the nose, which, although by itself has a limited effectiveness, when combined with the more powerful 20mm cannons, the .50 caliber provides extra attrition damage against enemy vehicles and exposed infantry. Much like its real-life counterpart, the P-51 Mustang serves as an effective plane for Close Air Support (CAS) roles. Its powerful Area of Effect (AoE) damage makes the platform well suited for engaging lightly armored vehicles and exposed infantry whilst also being able to finish off severely damaged tanks in specific circumstances. Evaluating this plane, if used correctly, the P-51 Mustang is a cheap, effective CAS aircraft but falters in other roles due to the divide between its skill requirements and effectiveness against other, more advanced planes."""
+    full_overview_text = """The P-51 Mustang is regarded as one of the weakest and most vulnerable vehicles in the entire game due to having no flares. Since it's a plane, it does not have the luxury of having the maneuverability of helicopters to linger in their flares, avoid lock-on missiles, and counter anti-air vehicles such as the Pantsir S1 and Patriot AA, which are extremely effective against the P-51 and other planes. The P-51 Mustang is equipped with four 20mm cannons mounted to its wings, which function similarly to a machine gun due to their lower individual fire rate when compared to the rotary cannons mounted to other planes such as the F-4 Phantom, F-14 Tomcat, and F-16 Falcon to name a few. The P-51's 20mm cannons combined, however, deal significant damage-per-shot and are able to fire over a larger area with each cannon shooting in an alternating pattern to maximise fire rate and coverage. The P-51 Mustang also comes with a single .50 caliber machine gun mounted underneath the nose, which, although by itself has a limited effectiveness, when combined with the more powerful 20mm cannons, the .50 caliber provides extra attrition damage against enemy vehicles and exposed infantry. Much like its real-life counterpart, the P-51 Mustang serves as an effective plane for Close Air Support (CAS) roles. Its powerful Area of Effect (AoE) damage makes the platform well suited for engaging lightly armored vehicles and exposed infantry whilst also being able to finish off severely damaged tanks in specific circumstances.
+Evaluating this plane, if used correctly, the P-51 Mustang is a cheap, effective CAS aircraft but falters in other roles due to the divide between its skill requirements and effectiveness against other, more advanced planes.
+Stats
+Firepower
+Armament
+Damage Per Shot (Non-Upgraded)
+Damage Per Shot (Tier 1)
+Damage Per Shot (Tier 2)
+Damage Per Shot (Tier 3)
+20mm Cannons
+[TBA]
+[TBA]
+[TBA]
+[TBA]
+.50 Caliber Machine Gun
+[TBA]
+[TBA]
+[TBA]
+[TBA]
+Speed
+Speed (Non-Upgraded)
+Speed (Tier 1)
+Speed (Tier 2)
+Speed (Tier 3)
+205 MPH
+[TBA] MPH
+[TBA] MPH
+266 MPH
+Health
+Health (Non-Upgraded)
+Health (Tier 1)
+Health (Tier 2)
+Health (Tier 3)
+650 HP
+715 HP
+780 HP
+845 HP
+"""
 
     processed_vectors.append(PineconeVector(
         id=f"{item_name.lower().replace(' ', '_')}_overview_full_text",
@@ -222,8 +316,8 @@ def parse_p51_webpage_content(webpage_text: str) -> List[PineconeVector]:
             "unit": "MPH",
             "tiers": {
                 "Non-Upgraded": 205,
-                "Tier 1": None,
-                "Tier 2": None,
+                "Tier 1": None, # [TBA] represented as None
+                "Tier 2": None, # [TBA] represented as None
                 "Tier 3": 266
             }
         },
@@ -250,7 +344,7 @@ def parse_p51_webpage_content(webpage_text: str) -> List[PineconeVector]:
         },
         text_content=health_text
     ))
-    
+
     # --- Chunk 8: Category Information for this Plane ---
     category_text = f"The {item_name} is classified under the 'Fighters' category of planes."
     processed_vectors.append(PineconeVector(
@@ -267,62 +361,20 @@ def parse_p51_webpage_content(webpage_text: str) -> List[PineconeVector]:
 
     return processed_vectors
 
-# --- Main Execution Block ---
+
+# --- Main Execution Block for P-51 ---
 if __name__ == "__main__":
-    # Ensure the output file is empty or doesn't exist to start fresh
-    # For repeated runs, you might want to uncomment these lines
-    if os.path.exists("pinecone_vectors.jsonl"):
-        os.remove("pinecone_vectors.jsonl")
-        print("Removed existing pinecone_vectors.jsonl to start fresh.")
+    # Ensure the output file is empty or doesn't exist to start fresh for P-51
+    p51_output_jsonl = "pinecone_p51_vectors.jsonl"
+    p51_output_pretty_json = "pinecone_p51_vectors_pretty.json"
 
-    # --- Example 1: P-51 Mustang Webpage Content ---
-    p51_webpage_content = """
-The North American P-51 Mustang (referred to as simply the "P-51 Mustang" in War Tycoon) is a WW2-era fighter.
-It is unlocked after purchasing it for $700,000 in the Plane Hangar at Rebirth 7.
-Contents
-1
-Overview
-2
-Stats
-2.1
-Firepower
-2.2
-Speed
-2.3
-Health
-Overview
-P-51 Mustang
+    if os.path.exists(p51_output_jsonl):
+        os.remove(p51_output_jsonl)
+        print(f"Removed existing {p51_output_jsonl} to start fresh.")
 
-The in-game render for the P-51 Mustang.
-General Information
-Price
-$700,000
-Speed (Minimum)
-Speed (Maximum)
-205 MPH
-266 MPH
-
-Health (Minimum)
-Health (Maximum)
-650 HP
-845 HP
-Armament
-- 4x 20mm Cannons;
-- 1x .50 Caliber Machine Gun.
-Utility
-- Zoom In
-Seating Capacity
-1
-Hulls
-Weapons
-Engines
-1
-1
-1
-The P-51 Mustang is regarded as one of the weakest and most vulnerable vehicles in the entire game due to having no flares. Since it's a plane, it does not have the luxury of having the maneuverability of helicopters to linger in their flares, avoid lock-on missiles, and counter anti-air vehicles such as the Pantsir S1 and Patriot AA, which are extremely effective against the P-51 and other planes.
-The P-51 Mustang is equipped with four 20mm cannons mounted to its wings, which function similarly to a machine gun due to their lower individual fire rate when compared to the rotary cannons mounted to other planes such as the F-4 Phantom, F-14 Tomcat, and F-16 Falcon to name a few. The P-51's 20mm cannons combined, however, deal significant damage-per-shot and are able to fire over a larger area with each cannon shooting in an alternating pattern to maximise fire rate and coverage.
-The P-51 Mustang also comes with a single .50 caliber machine gun mounted underneath the nose, which, although by itself has a limited effectiveness, when combined with the more powerful 20mm cannons, the .50 caliber provides extra attrition damage against enemy vehicles and exposed infantry.
-Much like its real-life counterpart, the P-51 Mustang serves as an effective plane for Close Air Support (CAS) roles. Its powerful Area of Effect (AoE) damage makes the platform well suited for engaging lightly armored vehicles and exposed infantry whilst also being able to finish off severely damaged tanks in specific circumstances.
+    # --- P-51 Mustang Webpage Content (hardcoded) ---
+    p51_webpage_content = r"""The North American P-51 Mustang (referred to as simply the 'P-51 Mustang' in War Tycoon) is a WW2-era fighter. It is unlocked after purchasing it for $700,000 in the Plane Hangar at Rebirth 7. It has a seating capacity of 1, 1 hull, 1 weapon, 1 engine, and the utility 'Zoom In'.
+The P-51 Mustang is regarded as one of the weakest and most vulnerable vehicles in the entire game due to having no flares. Since it's a plane, it does not have the luxury of having the maneuverability of helicopters to linger in their flares, avoid lock-on missiles, and counter anti-air vehicles such as the Pantsir S1 and Patriot AA, which are extremely effective against the P-51 and other planes. The P-51 Mustang is equipped with four 20mm cannons mounted to its wings, which function similarly to a machine gun due to their lower individual fire rate when compared to the rotary cannons mounted to other planes such as the F-4 Phantom, F-14 Tomcat, and F-16 Falcon to name a few. The P-51's 20mm cannons combined, however, deal significant damage-per-shot and are able to fire over a larger area with each cannon shooting in an alternating pattern to maximise fire rate and coverage. The P-51 Mustang also comes with a single .50 caliber machine gun mounted underneath the nose, which, although by itself has a limited effectiveness, when combined with the more powerful 20mm cannons, the .50 caliber provides extra attrition damage against enemy vehicles and exposed infantry. Much like its real-life counterpart, the P-51 Mustang serves as an effective plane for Close Air Support (CAS) roles. Its powerful Area of Effect (AoE) damage makes the platform well suited for engaging lightly armored vehicles and exposed infantry whilst also being able to finish off severely damaged tanks in specific circumstances.
 Evaluating this plane, if used correctly, the P-51 Mustang is a cheap, effective CAS aircraft but falters in other roles due to the divide between its skill requirements and effectiveness against other, more advanced planes.
 Stats
 Firepower
@@ -360,28 +412,20 @@ Health (Tier 3)
 780 HP
 845 HP
 """
-
     print("\n--- Processing P-51 Mustang ---")
-    p51_vectors = parse_p51_webpage_content(p51_webpage_content)
+
+    # Apply cleaning steps directly to the hardcoded string
+    cleaned_p51_content = _scrub_webpage_content_chars(p51_webpage_content)
+    cleaned_p51_content = re.sub(r'\s*\d+\s*[\u200B-\u200D\uFEFF]?\s*\uD83D[\uDCAD\uDCE4\uDCAC\uDD8E\uDD81-\uDD8E\u200B-\u200D\uFEFF]?[^\n]*?SIGN IN TO EDIT.*?[\u200B-\u200D\uFEFF]?\u22EE\s*', '', cleaned_p51_content, flags=re.DOTALL)
+    cleaned_p51_content = re.sub(r'SIGN IN TO EDIT.*', '', cleaned_p51_content)
+    cleaned_p51_content = re.sub(r'Contents\s*\[hide\].*?(?=(Overview|\d+\s*Overview|\d+\s*Stats|\d+\s*Firepower|\d+\s*Speed|\d+\s*Health))', '', cleaned_p51_content, flags=re.DOTALL | re.IGNORECASE)
+    cleaned_p51_content = re.sub(r'^\s*\d+(\.\d+)?\s*$', '', cleaned_p51_content, flags=re.MULTILINE)
+    cleaned_p51_content = re.sub(r'\n{3,}', '\n\n', cleaned_p51_content)
+    cleaned_p51_content = cleaned_p51_content.strip()
+
+    p51_vectors = parse_p51_webpage_content(cleaned_p51_content)
     print(f"Generated {len(p51_vectors)} vectors for P-51 Mustang.")
-    save_vectors_to_jsonl(p51_vectors)
-    
-    # --- Call the pretty-print writing function ---
-    # This will write the *current* content of pinecone_vectors.jsonl
-    # (which includes the P-51 data you just processed)
-    # into pinecone_vectors_pretty.json
-    write_pretty_json_output(
-        remove_embeddings_for_display=True # This is now the default and will remove embeddings
-    ) 
+    save_vectors_to_jsonl(p51_vectors, filepath=p51_output_jsonl) # Save to a specific file
+    write_pretty_json_output(input_jsonl_filepath=p51_output_jsonl, output_json_filepath=p51_output_pretty_json)
 
-
-    # --- Example 2: Add parsing logic for a different item/page ---
-    # You would define a new function like parse_ak47_webpage_content()
-    # ak47_webpage_content = "..."
-    # print("\n--- Processing AK-47 ---")
-    # ak47_vectors = parse_ak47_webpage_content(ak47_webpage_content)
-    # print(f"Generated {len(ak47_vectors)} vectors for AK-47.")
-    # save_vectors_to_jsonl(ak47_vectors)
-    # write_pretty_json_output() # Call again to update the pretty file with new data
-
-    print("\nProcessing complete. Check 'pinecone_vectors.jsonl' (for Pinecone) and 'pinecone_vectors_pretty.json' (for review) files.")
+    print(f"\nProcessing complete. Check '{p51_output_jsonl}' (for Pinecone) and '{p51_output_pretty_json}' (for review) files.")
